@@ -16,7 +16,7 @@ then
 	echo "For a better usage: $0 working_path/ simulation_path/ synthesys_path/"
 fi
 
-if [ ! -d $1 || ! -d $2 || ! -d $3 ]
+if [[ ! -d $1 ]] || [[ ! -d $2 ]] || [[ ! -d $3 ]]
 then
 	echo "Bad argument/s!"
 	exit 1
