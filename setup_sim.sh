@@ -3,7 +3,9 @@
 #script for setting up a working directory for simulation and synthesys
 #default working directory will be ~/Desktop/LAB
 
-DEF_PATH="~/Desktop"
+DEF_PATH="/home/$(whoami)/Desktop"
+MENTOR="setmentor"
+LIB="vlib"
 echo "------------------"
 echo "Set up a simulation environment"
 
@@ -23,7 +25,7 @@ else
 	fi
 fi
 
-cd "$DEF_PATH"
+cd $DEF_PATH
 mkdir "LABx"
 
 if [ $? -eq 1 ]
@@ -56,12 +58,7 @@ echo "|  |--/vhdlsim (*place here vhdl design to simulate)"
 echo "|  |--/syn (*where synthesys is done)"
 echo "------------------"
 
-#setup simulator
-cd "LABx/vhdlsim"
-setmentor 	#environment variables for vsim
-vlib "work" #temporary folder for simulator
-
-echo "Now you can place VHDL here, simulate with Questa Modelsim. [use vsim &]"
+echo "Now you can place VHDL here, simulate with Questa Modelsim. [use setmentor and  vsim &]"
 
 
 

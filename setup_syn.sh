@@ -2,7 +2,7 @@
 
 #setup synthesys environment
 #default path is ~/Desktop/LABx, as result of simulation.sh
-DEF_PATH="~/Desktop/LABx"
+DEF_PATH="/home/$(whoami)/Desktop/LABx"
 SIM_PATH="$DEF_PATH/vhdlsim"
 SYN_PATH="$DEF_PATH/syn"
 SYNOPSYS_SCRPT_FILE=".synopsys_dc.setup"
@@ -16,23 +16,26 @@ then
 	echo "For a better usage: $0 working_path/ simulation_path/ synthesys_path/"
 fi
 
-if [[ ! -d $1 ]] || [[ ! -d $2 ]] || [[ ! -d $3 ]]
+if [ $# -eq 3 ]
 then
+    if [[ ! -d $1 ]] || [[ ! -d $2 ]] || [[ ! -d $3 ]]
+    then
 	echo "Bad argument/s!"
 	exit 1
-else
+    else
 	DEF_PATH="$1"
 	SIM_PATH="$2"
 	SYN_PATH="$3"
+    fi
 fi
 
 cd "$DEF_PATH"
 pwd
-echo "copying vhdl files from $2 to $3"
+echo "copying vhdl files from $SIM_PATH to $SYN_PATH"
 
 #cp -t target/ --> copy all source files into target directory
-find "$2" -maxdepth 1 -type f -name '*.vhd' ! -name 'tb_*.vhd' -exec cp -t "$3" {} +
-cd "$3"
+find "$SIM_PATH" -maxdepth 1 -type f -name '*.vhd' ! -name 'tb_*.vhd' -exec cp -t "$SYN_PATH" {} +
+cd "$SYN_PATH"
 
 for file in $(ls)
 do
@@ -64,9 +67,8 @@ then
 	fi
 fi
 
-setsynopsys 	#setup environment
-mkdir work		#tmp for synthesys
-echo "start sintetyzer with design_vision &" 
+mkdir work
+echo "start sintetyzer with setsynopsys and  design_vision &" 
 
 
 
