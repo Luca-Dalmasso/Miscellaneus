@@ -18,6 +18,21 @@ then
 fi
 
 #deleting all work/ directories
+find $1 -type d -name work -exec rm -r {} +
 
-find $1 -type d -name work -exec rm -r 
+#deleting all .log files
+find $1 -type f -name *.log -exec rm {} +
+
+#deleting all .svf files
+find $1 -type f -name *.svf -exec rm {} +
+
+#deleting all .ddc files
+find $1 -type f -name *.ddc -exec rm {} +
+
+#deleting all .wlf files
+find $1 -type f -name *.wlf -exec rm {} +
+
+#deleting all transcript files
+find $1 -type f -name transcript -exec rm {} +
+exit 0
 
