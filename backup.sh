@@ -7,13 +7,13 @@
 if [ $# -lt 2 ]
 then
 	echo "usage: $0 source/ dest/"
-	exit 0
+	exit 1
 fi
 
 if [[ ! -d $1 ]] || [[ ! -d $2 ]]
 then
 	echo "bad source/ dest/"
-	exit 0
+	exit 1
 fi
 
 for name in $(ls "$1")
