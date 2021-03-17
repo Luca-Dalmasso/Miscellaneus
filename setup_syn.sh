@@ -8,48 +8,52 @@ SYN_PATH="$DEF_PATH/syn"
 SYNOPSYS_SCRPT_FILE=".synopsys_dc.setup"
 SETUP_SCRPT_SOURCE="/home/repository/ms/setup/.synopsys_dc.setup"
 echo "------------------"
-if [ $# -lt 3 ]
+if [ $# -lt 1 ]
 then
 	echo "I'm using deafult working path $DEF_PATH, you shoud change it!"
-	echo "I'm using default sim path $SIM_PATH, you should change it!"
-	echo "I'm using default syn path $SYN_PATH, you should change it!"
-	echo "For a better usage: $0 working_path/ simulation_path/ synthesys_path/"
+	echo "For a better usage: $0 working_path/"
 fi
 
-if [ $# -eq 3 ]
+if [ $# -eq 1 ]
 then
-    if [[ ! -d $1 ]] || [[ ! -d $2 ]] || [[ ! -d $3 ]]
+    if [ ! -d $1 ]
     then
-	echo "Bad argument/s!"
+	echo "Bad argument"
 	exit 1
     else
 	DEF_PATH="$1"
-	SIM_PATH="$2"
-	SYN_PATH="$3"
+	SIM_PATH="$DEF_PATH/vhdlsim"
+	SYN_PATH="$DEF_PATH/syn"
+	if [[ ! -d $SIM_PATH ]] || [[ ! -d $SYN_PATH ]] 
+	then
+		echo "Cannot find ./syn or ./vhdlsim in $DEF_PATH"
+		exit 1
+	fi
     fi
 fi
 
-cd "$DEF_PATH"
+echo $DEF_PATH
+cd $DEF_PATH
 pwd
 echo "copying vhdl files from $SIM_PATH to $SYN_PATH"
 
 #cp -t target/ --> copy all source files into target directory
 find "$SIM_PATH" -maxdepth 1 -type f -name '*.vhd' ! -name 'tb_*.vhd' -exec cp -t "$SYN_PATH" {} +
-cd "$SYN_PATH"
+cd $SYN_PATH
 
 for file in $(ls)
 do
 	echo "----------------"
-	cat "$file" | grep AFTER
+	cat "$file" | grep "AFTER"
 	sed -i 's/AFTER/;--AFTER/gI' "$file"
 	if [ $? -eq 0 ]
 	then
 		echo "$file processed "
 	else
-		echo "$file cannot be processed!, check $2 before proceeding to synthesys"
+		echo "$file cannot be processed!"
 		exit 1
 	fi
-	cat "$file" | grep AFTER
+	cat "$file" | grep "AFTER"
 	echo "----------------"
 done
 
@@ -69,6 +73,8 @@ fi
 
 mkdir work
 echo "start sintetyzer with setsynopsys and  design_vision &" 
+
+
 
 
 
