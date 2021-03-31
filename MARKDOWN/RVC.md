@@ -39,13 +39,8 @@ Example on requirements process.
 - *Actor*: subset of stackeholders that is going to use our System
 
 ```plantuml
-actor :End user: as A1
-actor :Power Socket: as A2
-actor :Environment: as A3
-"SVC System" as (SYS)
-A1--(SYS)
-A2-->(SYS)
-A3--(SYS)
+![Context](http://www.plantuml.com/plantuml/png/SoWkIImgAStDuKfCBialKh1opKjHA2rEBR9II2nMS3I42GVabwSMAGJd9sUdba2aZ10woZABylDoK_EWCiPSIi5XpWh1bSKbgRbA826DuCXWJIv7GrrTACj8LzSEoZI62JgavgK07G80)
+
 ```
 
 # Interfaces
