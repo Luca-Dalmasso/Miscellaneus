@@ -38,10 +38,7 @@ Example on requirements process.
 **Definition**: link between Actors and system
 - *Actor*: subset of stackeholders that is going to use our System
 
-```plantuml
 ![Context](http://www.plantuml.com/plantuml/png/SoWkIImgAStDuKfCBialKh1opKjHA2rEBR9II2nMS3I42GVabwSMAGJd9sUdba2aZ10woZABylDoK_EWCiPSIi5XpWh1bSKbgRbA826DuCXWJIv7GrrTACj8LzSEoZI62JgavgK07G80)
-
-```
 
 # Interfaces
 **Definition**: Physical device used by links defined in Context diagram
@@ -94,26 +91,8 @@ consistent), describe *how* the system should perform a certain functionality.
 It's a more detailed context diagram.
 In this diagram are missing all NFReq, btw they should be present..
 
-```plantuml
-actor :End User: as Primary
-actor :Power Socket: as Power
-actor :Environment: as Obstacles
-"Robot Vacuum Cleaner" as (RVC)
-"Clean the house" as (FRClean)
-"Learn the house" as (FRLearn)
-"Move in the house" as (FRMove)
-"Charge and recharge" as (FRBattery)
-"Do not harm people" as (FRSafety)
-(RVC) .> (FRClean) :include
-(RVC) .> (FRLearn) :include
-(RVC) .> (FRMove) :include
-(RVC) .> (FRBattery) :include
-(RVC) .> (FRSafety) :include
-Primary-->(FRClean)
-Primary-->(FRLearn)
-Power<--(FRBattery)
-Obstacles<--(FRMove)
-```
+![Use Case](http://www.plantuml.com/plantuml/svg/RP71JiCm38RlVGgh9pYK1wZGD37W16BgnEvUQcX54a-ECxItfscXuP1Z_kzFzCNU1aNHw6o5HbcWVV8zl0UI5Z30NaQ7SlrZU_ucWGERBzA5fo3Vl8p2tf5VuDifA1fBeQexFh724KsC3dQMq9FKgNFJ7NUtLJr7e0F1m37GWfwxEPxm2w4KS8eJVkKBmLWe991U7r0-2T3t86JIOMqye2h9TIezCdXMcAY3C_7Phfq3Vf1EbTaLxZRP3DhH6njxocpLAhDaL4HPfK2pH8Q_gscQJHvKpl9qvXNTDyt_pwwRMV9bJ5loVNJs1m00)
+
 
 ## Use cases
 **Definition**: text-based description of set of scenarios describing what is going on when an Actors use a particular system functionality.
@@ -138,50 +117,11 @@ Here follow only one example, there should be at least one use case for each mai
 # System design
 **Definition**: Describe all physical and software components that are part of the systems.
 
-
-```plantuml
-object Robot
-object Computer
-object Software
-object "Robot Vacuum Cleaner" as SVC
-object Switch
-object Wheel
-object "Wheel sensor" as WS
-object "Obstacle sensor" as OBS
-object Battery
-object "Battery sensor" as BS
-object "Charging station" as CS
-object "Power socket" as PSOC
-Robot o-- Computer
-Computer -- Software
-Robot o-- OBS
-Robot o-- "4" Wheel
-Wheel o-- "0..1" WS
-Robot o-- Battery
-Battery o-- BS
-Robot o-- "3" Switch : "on, off, start"
-SVC o-- Robot
-SVC o-- CS
-CS o-- PSOC
-```
+![System Design](http://www.plantuml.com/plantuml/svg/JP7DReCm48JlFCNAvoHgrPvwYk878Agbv6pSvQS5RsKlGdtxMWisN91dvrk9cRr6je7dQQoe-KR7y4aDSHQQfj-PCMHjgEN51inQ2GqFw-Pv0ZsYzHWKs0ZceSlICh3hithsY6FP5mKHVQHrxscALpUHhHlnQDUtujyiCuQ_Wc_wIE-mqhqDtU0xY6nv82--tlqxBHWWalj15kzkQbsjyUXytfl83qZ3KaVXv0TtfTxL5bY-w-pbSdbDumDNikGCCZi2warjFS87AF8deBOzWHnFLQbieOGlAgNJHbwIvOh-Aztv7m00)
 
 # Deployment Diagram
 **Definition**: Shows the hardware-software configuration
 *NODE*: Entity capable of processing
 *ARTIFACT*: Source file, library, executable, table, db, ..
 
-```plantuml
-artifact "Control" {
-file "Engine control"
-file "Battery control"
-file "Sensor control"
-}
-artifact "App" {
-file "Cleaning and Learning Algorithms"
-}
-node "ECU"
-node "CPU"
-Control -- ECU
-App -- CPU
-ECU == CPU : "Can bus"
-```
+![deployment diagram](http://www.plantuml.com/plantuml/svg/NOx12i8m38RlVOhG-rv066mMRnu4yG7Ybir2buukFOZuxgPIc7Zgd-zllwRR19Fa9HWz_8I3W7MH9SLWuMKc7mZiYMVF14FbbHvHXDBp7r-9jvXs-lunz-kwMrqWPCyp88zm9apVeGzpJ5uUorQUSXpB_-vcQtGNZNL1Q1hGogYrHAsCZj2s9S91BoF3FQke8nxp4Zu0)
