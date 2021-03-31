@@ -144,7 +144,7 @@ Here follow only one example, there should be at least one use case for each mai
 **Definition**: Describe all physical and software components that are part of the systems.
 
 
-```plantuml
+@startuml
 object Robot
 object Computer
 object Software
@@ -168,7 +168,7 @@ Robot o-- "3" Switch : "on, off, start"
 SVC o-- Robot
 SVC o-- CS
 CS o-- PSOC
-```
+@enduml
 
 # Deployment Diagram
 **Definition**: Shows the hardware-software configuration
