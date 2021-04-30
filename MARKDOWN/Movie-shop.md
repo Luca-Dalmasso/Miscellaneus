@@ -17,3 +17,5 @@ The shop must monitor the availability of movies and purchase them from distribu
        same for *Rental* transactions, that are always associated with a card.
 
   ![Conceptual UML](http://www.plantuml.com/plantuml/png/RLF1QW8n4BtlLmnx4KfTwbMAIBUN7cgXBRrdDwa6Oh8a4qNentVYJZIo7iINl3SpxoMRTK3XCUvDrHiH0dpjtC2m5IYCsqR5wpTxK1QTF_7wtHrqvbvLwBqUYAsgr0BcywB-Wj9s_L0NSbY2qG43h79TCUU2k6uSIINQzYPAbQh6BU8B2spgmqlb6NzxOOFeKJkRayPXC9e4Pnay_r6FKfNjq5pkb2lANIwV1gkiGmNroEe0dGYw5yQSG9mJW_k5sO_s68KPSuNP8mG76cU1D7Yr0cJNzLgWad3Kk2kcXAOc5ZOBjj4q2MyM2KmFv2MUAlfDil8XfW14a8BrRGpezfIHGOvPIEhMAwaHMk5bFT7TikMAkAUcMTIil7i_NVBVqVWC-PgklbYQ6ZByLFrE-AsgCfY6RLbeKPXg_9kAokk_RoMJQJWimHrj-XpJAXzaja2iPoYXe-FdgQpB7QIpQhpVrQs0NzfQMKaFzHy0)
+
+
