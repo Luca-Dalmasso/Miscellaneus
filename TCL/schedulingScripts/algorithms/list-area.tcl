@@ -7,7 +7,8 @@ proc get_resources {nodes} {
 	foreach node $nodes {
 		set res [get_attribute $node operation]
 		if { [lsearch $resources $res] == -1 } {
-			lappend resources $res
+			lappend resources $res		
+			puts "$res-> delay: [get_attribute [get_lib_fu_from_op $res] delay]"
 		}
 	}
 	return $resources
@@ -54,7 +55,7 @@ proc update_in_progress {in_progress nodes_to_update Tcurrent} {
 # NODE
 # a CANDIDATE is choosen only if none of his parents (or himself) has already been scheduled or still in progress
 
-proc get_candidates {in_progress scheduled dfg} {
+proc get_candidates {in_progress scheduled dfg t} {
 	
 	set ready [list]
 	set dontschedule 0
@@ -83,13 +84,22 @@ proc get_candidates {in_progress scheduled dfg} {
 	return $ready
 }
 
-proc list_sched_area {input_bounds} {
+proc updateResCount {in_progress operation} {
+	set count 0
+	foreach llist $in_progress {
+		if {[get_attribute [lindex $llist 0] operation]==$operation} {
+			incr count
+		}
+	}
+	return $count
+}
 
+proc list_sched_area {input_bounds} {
 	set dfg [get_sorted_nodes]
 	set resources [get_resources $dfg]
 	#set input_bounds {"MUL 1" "ADD 2" "DIV 1"}
 	set resources [set_res_bounds $resources $input_bounds]
-	#puts $resources
+	puts $resources
 	set test_progress [list]
 	set scheduled [list]
 	set in_progress [list]
@@ -100,8 +110,9 @@ proc list_sched_area {input_bounds} {
 		incr Tcurrent
 		set in_progress [update_in_progress $in_progress $scheduled $Tcurrent]
 		foreach RES_LIMIT $resources {
-			set current_count 0
-			foreach CAND [get_candidates $in_progress $scheduled $dfg] {
+			set current_count [updateResCount $in_progress [lindex $RES_LIMIT 0]]
+			#puts "@$Tcurrent for [lindex $RES_LIMIT 0] count is: $current_count"
+			foreach CAND [get_candidates $in_progress $scheduled $dfg $Tcurrent] {
 				set RES_TYPE [get_attribute $CAND operation]
 				if { $RES_TYPE == [lindex $RES_LIMIT 0] & $current_count < [lindex $RES_LIMIT 1]} {
 					incr current_count

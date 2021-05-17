@@ -1,0 +1,16 @@
+Testing list scheduling area constrained
+MUL-> delay: 10
+DIV-> delay: 3
+ADD-> delay: 5
+{MUL 1} {DIV 1} {ADD 1}
+NODE, START-TIME
+C, 1
+D, 1
+E, 1
+B, 6
+H2, 11
+A, 16
+H1, 21
+H, 26
+O, 31
+Y, 31
