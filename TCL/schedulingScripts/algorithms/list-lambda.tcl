@@ -93,6 +93,16 @@ proc updateRes {RES_LIMIT RESOURCES} {
 	return [lappend RES_LIMIT $RES_LIMIT_INDEX]
 }
 
+proc updateResCount {in_progress operation} {
+	set count 0
+	foreach llist $in_progress {
+		if {[get_attribute [lindex $llist 0] operation]==$operation} {
+			incr count
+		}
+	}
+	return $count
+}
+
 proc list_sched_timing {lambda_alap lambda_asap} {
 	set dfg [get_sorted_nodes]
 	set resources [get_resources $dfg]
@@ -107,7 +117,7 @@ proc list_sched_timing {lambda_alap lambda_asap} {
 		incr Tcurrent
 		set in_progress [update_in_progress $in_progress $scheduled $Tcurrent]
 		foreach RES_LIMIT $resources {
-			set current_count 0
+			set current_count [updateResCount $in_progress [lindex $RES_LIMIT 0]]
 			foreach CAND [get_candidates $in_progress $scheduled $dfg] {
 				set RES_TYPE [get_attribute $CAND operation]
 				if { $RES_TYPE == [lindex $RES_LIMIT 0] } {
