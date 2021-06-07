@@ -1,0 +1,24 @@
+ W/12 
+ 
+ Net Switching Power  = 7.054e-04   (45.50%) 
+ Cell Internal Power  = 8.433e-04   (54.40%)
+ Cell Leakage Power   = 1.509e-06   ( 0.10%)
+ Total Power            = 1.550e-03  (100.00%)
+
+ W/5
+ 
+ Net Switching Power  = 1.699e-03   (45.61%)
+ Cell Internal Power  = 2.024e-03   (54.35%)
+ Cell Leakage Power   = 1.508e-06   ( 0.04%)
+ Total Power            = 3.725e-03  (100.00%)
+
+ W/3
+
+ Net Switching Power  = 3.203e-03   (47.01%)
+ Cell Internal Power  = 3.608e-03   (52.96%)
+ Cell Leakage Power   = 1.793e-06   ( 0.03%)
+ Total Power            = 6.813e-03  (100.00%)
+
+
+
+
