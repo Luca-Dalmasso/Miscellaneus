@@ -1,25 +1,29 @@
 #!/usr/bin/tclsh
 
+
+#!!script not tested for multiple sinks graph!!
+
 variable distance 0
 variable node_priority [list]
 variable node_visited [list]
 
 
 proc depth_visit node {
-	set nodeINDEX [lsearch -index 0 $::node_visited $node]
-	set ::node_visited [lreplace $::node_visited $nodeINDEX $nodeINDEX "$node 1"]
+	set nodeINDEX [lsearch -index 0 $::node_priority $node]
 	foreach parent [get_attribute $node parents] {
-		set has_visited [lindex [lindex $::node_visited [lsearch -index 0 $::node_visited $parent]] 1]
-		if {$has_visited == 0} {
-			set ::distance [expr {$::distance + 1}]
-			depth_visit $parent
-			set ::distance [expr {$::distance - 1}]
+		set ::distance [expr {$::distance + 1}]
+		depth_visit $parent
+		set ::distance [expr {$::distance - 1}]
+	}
+	if {$nodeINDEX == -1} {
+		lappend ::node_priority "$node $::distance"
+	} else {
+		if {$::distance > [lindex [lindex $::node_priority $nodeINDEX] 1]} {
+			set ::node_priority [lreplace $::node_priority $nodeINDEX $nodeINDEX "$node $::distance"]
 		}
 	}
-	if {$::distance > [lindex [lindex $::node_priority $nodeINDEX] 1]} {
-		set ::node_priority [lreplace $::node_priority $nodeINDEX $nodeINDEX "$node $::distance"]
-	}
 }
+
 
 proc get_sinks nodes {
 	set sinks [list]

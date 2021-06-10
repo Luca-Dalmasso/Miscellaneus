@@ -1,39 +1,36 @@
 #!/usr/bin/tclsh
 
+#SCRIPT NOT TESTED FOR MULTIPLE SINKS GRAPH
+
 variable distance 0
-variable node_visited [list]
+#variable node_visited [list]
 variable tmp_path [list]
 variable critical_path [list]
 variable greedy_list_delay [list]
 
 #given a loaded design (as a DFG data type)
-#performs a analyshis of the graph looking for the critical path
-#it returns a list of nodes rapresenting the critical path
+#performs a analysis of the graph looking for the critical path
+#it returns a list of nodes representing the critical path
 
 
 #$node == sink node
 proc depth_visit_get_critical node {
-	set nodeINDEX [lsearch -index 0 $::node_visited $node]
-	set ::node_visited [lreplace $::node_visited $nodeINDEX $nodeINDEX "$node 1"]
 	foreach parent [get_attribute $node parents] {
-		set has_visited [lindex [lindex $::node_visited [lsearch -index 0 $::node_visited $parent]] 1]
-		if {$has_visited == 0} {
-			set ::distance [expr {$::distance + [get_delay [get_attribute $node operation]]}]
-			lappend ::tmp_path "$node $::distance"
-			if {[llength [get_attribute $parent parents]] == 0} {
-				set ::distance [expr {$::distance + [get_delay [get_attribute $parent operation]]}]
-				lappend ::tmp_path "$parent $::distance"
-			}
-			depth_visit_get_critical $parent
-			if {[llength [get_attribute $parent parents]] == 0} {
-				set ::distance [expr {$::distance - [get_delay [get_attribute $parent operation]]}]
-				set prev_index [expr {[llength $::tmp_path] - 1}] 
-				set ::tmp_path [lreplace $::tmp_path $prev_index $prev_index]
-			}
-			set ::distance [expr {$::distance - [get_delay [get_attribute $node operation]]}]
+		set ::distance [expr {$::distance + [get_delay [get_attribute $node operation]]}]
+		lappend ::tmp_path "$node $::distance"
+		if {[llength [get_attribute $parent parents]] == 0} {
+			set ::distance [expr {$::distance + [get_delay [get_attribute $parent operation]]}]
+			lappend ::tmp_path "$parent $::distance"
+		}
+		depth_visit_get_critical $parent
+		if {[llength [get_attribute $parent parents]] == 0} {
+			set ::distance [expr {$::distance - [get_delay [get_attribute $parent operation]]}]
 			set prev_index [expr {[llength $::tmp_path] - 1}] 
 			set ::tmp_path [lreplace $::tmp_path $prev_index $prev_index]
 		}
+		set ::distance [expr {$::distance - [get_delay [get_attribute $node operation]]}]
+		set prev_index [expr {[llength $::tmp_path] - 1}] 
+		set ::tmp_path [lreplace $::tmp_path $prev_index $prev_index]
 	}
 	
 	if {$::distance > [lindex [lindex $::critical_path end] 1]} {
