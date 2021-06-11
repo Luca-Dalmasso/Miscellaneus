@@ -92,7 +92,6 @@ EZShop is a software application to:
 | Customer            |                                                  Buyers of products                                                  |
 | Supplier            |                                          Who delivers products to the store                                          |
 | Product             |                                                   Item to be sold                                                    |
-| Cash                |                                       money in the form of coins or banknotes                                        |
 | Payment card        |                                   a card that entitles a person to make purchases                                    |
 | Payment terminal    |                                   the system to manage payment with a credit card                                    |
 | Fidelity Card       |                              A card which rewards customers that make regular purchases                              |
@@ -105,17 +104,24 @@ EZShop is a software application to:
 ## Context Diagram
 
 ```plantuml
-@startuml context diagram
+@startuml
+Actor "Store Manager" as SM
+Actor "Cashier" as C
+Actor "Administrator" as A
+Actor "Maintainer"  as M
+A <|-- SM
+M <|-- SM
+C <|-- SM
 
-:Cashier: -d-> (System)
-:Store Manager: -d-> (System)
-:Administrator: -l-> (System)
-:Payment terminal: -r-> (System)
+C -> (System)
+SM -> (System)
+A -> (System)
+:Payment terminal: -l-> (System)
 :Product: -u-> (System)
 :Fidelity Card: -u-> (System)
-:Mainteiner: -u-> (System)
-
+M -> (System)
 @enduml
+
 ```
 
 ## Interfaces
@@ -129,7 +135,6 @@ EZShop is a software application to:
 | Product          |      barcode      |   barcode reader    |
 | Payment terminal |   web services    |   ethernet cable    |
 | Fidelity Card    |      barcode      |   barcode reader    |
-| internet         |   web protocols   |    modem/router     |
 
 
 # Stories and personas
@@ -271,61 +276,26 @@ Mark, a loyal customer and a close friend of Marta, shows up at the POS with few
 
 ## Use case diagram
 
-
 ```plantuml
 
 @startuml
-top to bottom direction
-rectangle System {
+
   (FR4.4 login) as (CASHERLOGIN)
-  (FR4.4 login) as (SMLOGIN)
   (FR4.4 login) as (ADMINLOGIN)
   (FR4.4 login) as (MAINTEINERLOGIN)
   (FR1 hanlde sale transaction) as (FR1)
-  (FR1.2 close sale transaction with success) as (FR1.2)
-  (FR1.3 cancel sale transaction) as (FR1.3)
-  (FR1.4 modify current transaction) as (FR1.4)
   (FR1.5 handle payment) as (FR1.5)
-  (FR1.5.1 handle cash payment) as (FR1.5.1)
-  (FR1.5.2 handle payment terminal data) as (FR1.5.2)
+ 
   (FR2 Read product barcode) as (FR2)
   (FR3 read fidelity card barcode) as (FR3)
   (FR4 manage user authentication) as (FR4)
   (FR5 manage inventory and catalogue) as (FR5)
-  (FR5.3 update quantity) as (FR5.3)
   (FR6 handle orders) as (FR6)
   (FR7 support accounting) as (FR7)
-  (FR7.1 add a sold product) as (FR7.1)
-  (FR7.2 add a purchased product) as (FR7.2)
-  (FR7.3 search in accounting) as (FR7.3)
   (FR8 manage updates) as (FR8)
 
-  (CASHERLOGIN) ..> (FR1) :<<include>>
-  (ADMINLOGIN) ..> (FR4) :<<include>>
-  (MAINTEINERLOGIN) ..> (FR8) :<<include>>
-  (SMLOGIN) ..> (FR5) :<<include>>
-  (SMLOGIN) ..> (FR6) :<<include>>
-  (SMLOGIN) ..> (FR7.3) :<<include>>
-  (FR1) ..> (FR1.2) :<<include>>
-    (FR1.2) ..> (FR1.5) :<<include>>
-      (FR1.5) ..> (FR1.5.1) :<<include>>
-      (FR1.5) ..> (FR1.5.2) :<<include>>
-    (FR1.2) ..> (FR5.3) :<<include>>
-      (FR5.3) <.. (FR5) :<<include>>
-    (FR1.2) ..> (FR7.1) :<<include>>
-      (FR7.1) <.. (FR7) :<<include>>
-  (FR1) ..> (FR1.3) :<<include>>
-  (FR1) ..> (FR1.4) :<<include>>
-    (FR1.4) ..> (FR2) :<<include>>
-  (FR1) ..> (FR3) :<<include>>
-  (FR4) ..> (FR3) :<<include>>
-  (FR6) ..> (FR2) :<<include>>
-  (FR6) ..> (FR5.3) :<<include>>
-  (FR6) ..> (FR7.2) :<<include>>
-  (FR7) ..> (FR7.2) :<<include>>
-  (FR7) ..> (FR7.3) :<<include>>
+  (FR1) ..> (FR1.5) :<<include>>
 
-}
 
 actor "Fidelity Card" as FCARD
 actor "Payment terminal" as PT
@@ -334,15 +304,27 @@ actor "Store Manager" as GOD
 Administrator <|-- GOD
 Maintainer <|-- GOD
 Cashier <|-- GOD
-Cashier -d-> (CASHERLOGIN)
-Administrator -d-> (ADMINLOGIN)
-Maintainer -d-> (MAINTEINERLOGIN)
-GOD -d-> (SMLOGIN)
+
+Cashier -> (CASHERLOGIN)
+Cashier -> (FR1)
+Cashier -> (FR2)
+Cashier -> (FR3)
+
+PT <-- (FR1.5)
+
+FCARD <-- (FR3)
+
 Product <-- (FR2)
 Product <-- (FR5)
-FCARD <-- (FR3)
-PT <-- (FR1.5.2)
 
+Administrator -> (ADMINLOGIN)
+Administrator -> (FR4)
+
+Maintainer -> (MAINTEINERLOGIN)
+Maintainer -> (FR8)
+
+GOD -> (FR6)
+GOD -> (FR7)
 @enduml
 
 ```
@@ -746,7 +728,7 @@ Role <|-- Cashier
 Role <|-- SM
 Role <|-- Customer
 Role <|-- Maintainer
-Role -- "*" Transaction
+
 Transaction "*" -- "0..1" PCARD
 
 Transaction "*" -- "0..1" FC
@@ -764,8 +746,8 @@ User -- Update : handle if Administrator >
 @enduml
 ```
 
-# System Design
 
+# System Design
 
 ```plantuml
 @startuml
@@ -786,8 +768,10 @@ PC -- APP
 @enduml
 ```
 
-# Deployment Diagram 
 
+
+
+# Deployment Diagram 
 
 ```plantuml
 @startuml
