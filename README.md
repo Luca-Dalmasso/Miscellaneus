@@ -1,5 +1,5 @@
 # BASH
-Some useful bash scripts for me
+Some useful bash scripts
 
 # MARKDOWN
 Some useful example of markdown usage
